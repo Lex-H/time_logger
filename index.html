@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0e1a">
+<title>霧境時光 · 時間記錄</title>
+<!-- 主題：霧境（mist）＝ base；晴空（sky）＝ base + sky；漫畫（pop）＝ pop -->
+<style id="css-base">
+:root{color-scheme:dark;box-sizing:border-box;--tx:#EDF0FA;--mu:#9AA3C0;--gl:rgba(255,255,255,.06);--bd:rgba(255,255,255,.11);--ac:#A9B8FF;padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:#0b0e1a;color:var(--tx);font:15px/1.5 "PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;filter:blur(30px);background:radial-gradient(40% 35% at 20% 15%,#4b3f8f77,transparent),radial-gradient(35% 30% at 85% 30%,#1f7a8c55,transparent),radial-gradient(40% 40% at 60% 92%,#a1486b44,transparent)}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.num{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+.glass{background:var(--gl);backdrop-filter:blur(24px) saturate(1.5);-webkit-backdrop-filter:blur(24px) saturate(1.5);border:1px solid var(--bd);box-shadow:0 10px 40px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.08);border-radius:26px}
+#app{max-width:760px;margin:0 auto;padding:14px 16px calc(130px + env(safe-area-inset-bottom,0px))}
+header{display:flex;align-items:center;justify-content:space-between;padding:6px 4px 14px}
+h1{font-size:24px;margin:0;font-weight:700;letter-spacing:.02em}
+.ib{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--gl);border:1px solid var(--bd)}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:22px;margin-bottom:18px;position:relative;overflow:hidden;--c:#A9B8FF;background:linear-gradient(150deg,color-mix(in srgb,var(--c) 26%,transparent),rgba(255,255,255,.04))}
+.hero.run::after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:var(--c);filter:blur(60px);opacity:.35;animation:br 3.6s ease-in-out infinite}
+@keyframes br{50%{opacity:.7;transform:scale(1.2)}}
+.hrow{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.bub{width:46px;height:46px;border-radius:16px;display:grid;place-items:center;flex:none;background:color-mix(in srgb,var(--c) 28%,transparent);color:var(--c)}
+.big{font-size:clamp(40px,13vw,60px);font-weight:300;margin:10px 0 6px;position:relative;z-index:1;letter-spacing:.02em}
+.hero input{width:100%;background:rgba(0,0,0,.2);border:1px solid var(--bd);border-radius:14px;padding:10px 14px;position:relative;z-index:1;margin-bottom:12px}
+.btns{display:flex;gap:10px;position:relative;z-index:1}
+.btn{flex:1;padding:12px;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid var(--bd);font-weight:600}
+.btn.pr{background:var(--ac);color:#12162b;border-color:transparent}
+.btn.dg{color:#ff9aa8}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:12px}
+.tile{--c:#999;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 6px 12px;border-radius:22px;background:linear-gradient(160deg,color-mix(in srgb,var(--c) 22%,transparent),rgba(255,255,255,.04));border:1px solid color-mix(in srgb,var(--c) 34%,transparent);font-size:13px;transition:transform .18s ease-out}
+.tile:active{transform:scale(.95)}
+.tile.cur{box-shadow:0 0 0 2px var(--c)}
+.edm .tile{border-style:dashed}
+.sub{text-align:center;margin:16px 0}
+.sub button{color:var(--mu);padding:8px 16px;border-radius:99px}
+.datebar{display:flex;align-items:center;gap:6px;padding:8px 10px;margin-bottom:14px;flex-wrap:wrap;border-radius:22px}
+.datebar .ib{width:36px;height:36px}
+.dl{position:relative;font-weight:600;padding:4px 8px}
+.dl input{position:absolute;inset:0;opacity:0;width:100%}
+.tot{margin-left:auto;color:var(--mu);font-size:13px}
+.search{width:100%;padding:12px 16px;border-radius:18px;border:1px solid var(--bd);background:var(--gl);margin-bottom:14px}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:10px;width:100%;text-align:left;border-radius:20px;--c:#999}
+.row .bub{width:40px;height:40px;border-radius:14px}
+.row .m{flex:1;min-width:0}
+.row .m b{display:block;font-weight:600}
+.row .m small{color:var(--mu);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .d{font-size:17px}
+.tl{position:relative;margin-left:2px;padding:0}
+.hr{position:absolute;left:0;right:0;height:0;border-top:1px solid rgba(255,255,255,.06)}
+.hr span{position:absolute;top:-9px;left:0;font-size:11px;color:var(--mu);background:transparent}
+.blk{position:absolute;left:52px;right:0;border-radius:12px;padding:2px 10px;overflow:hidden;text-align:left;--c:#999;background:color-mix(in srgb,var(--c) 30%,rgba(20,22,40,.5));border:1px solid color-mix(in srgb,var(--c) 55%,transparent);backdrop-filter:blur(10px);font-size:13px;line-height:1.35}
+.blk b{font-weight:600}
+.blk.sm{font-size:10px;line-height:12px;padding:0 8px;border-radius:8px}
+.now{position:absolute;left:44px;right:0;border-top:2px solid #ff7a90;z-index:3}
+.now::before{content:"";position:absolute;left:-6px;top:-5px;width:8px;height:8px;border-radius:50%;background:#ff7a90}
+.seg{display:flex;gap:6px;margin-bottom:14px;padding:5px;border-radius:99px}
+.seg button{flex:1;padding:8px;border-radius:99px;color:var(--mu)}
+.seg .on{background:rgba(255,255,255,.14);color:var(--tx);font-weight:600}
+.card{padding:18px;margin-bottom:14px}
+.pie{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.pie svg{width:170px;height:170px;flex:none;transform:rotate(-90deg)}
+.leg{flex:1;min-width:180px}
+.leg div{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:14px}
+.leg i{width:10px;height:10px;border-radius:50%;flex:none}
+.leg span:last-child{margin-left:auto;color:var(--mu)}
+.bars{display:flex;gap:3px;height:160px}
+.col{flex:1;display:flex;flex-direction:column;min-width:0}
+.stack{flex:1;display:flex;flex-direction:column-reverse;gap:1px}
+.stack u{display:block;border-radius:3px;min-height:1px}
+.col i{font-style:normal;font-size:10px;color:var(--mu);height:16px;text-align:center;white-space:nowrap;overflow:visible}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:8px;z-index:10;border-radius:99px;width:min(420px,calc(100% - 28px))}
+.dock button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 0;border-radius:99px;color:var(--mu);font-size:11px;transition:background .2s}
+.dock .on{background:rgba(169,184,255,.2);color:#fff}
+.fab{position:fixed;right:20px;bottom:calc(98px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:20px;z-index:11;font-size:30px;line-height:1;background:rgba(169,184,255,.3);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.25);box-shadow:0 8px 30px rgba(0,0,0,.4)}
+#sheet{position:fixed;inset:0;z-index:30;display:none}
+#sheet.on{display:block}
+.bk{position:absolute;inset:0;background:rgba(5,6,14,.55);backdrop-filter:blur(4px)}
+.pn{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(560px,100%);max-height:88vh;overflow:auto;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));border-radius:30px 30px 0 0;background:rgba(28,30,52,.82);animation:up .22s ease-out}
+@keyframes up{from{transform:translate(-50%,40px);opacity:0}}
+.pn h2{margin:0 0 14px;font-size:19px}
+.pn label{display:block;color:var(--mu);font-size:13px;margin:12px 0 6px}
+.pn input,.pn textarea{width:100%;padding:11px 14px;border-radius:14px;background:rgba(0,0,0,.25);border:1px solid var(--bd)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{--c:#999;display:flex;align-items:center;gap:6px;padding:6px 12px 6px 8px;border-radius:99px;border:1px solid color-mix(in srgb,var(--c) 40%,transparent);background:color-mix(in srgb,var(--c) 14%,transparent);font-size:13px}
+.chip .ic{width:16px;height:16px;color:var(--c)}
+.chip.on{background:color-mix(in srgb,var(--c) 45%,transparent);box-shadow:0 0 0 2px var(--c)}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid transparent}
+.sw.on{border-color:#fff}
+.mt{margin-top:18px}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:50;padding:10px 18px;border-radius:99px;background:rgba(40,44,80,.95);border:1px solid var(--bd)}
+.empty{text-align:center;color:var(--mu);padding:40px 0}
+@media(min-width:900px){#app{max-width:900px;padding-left:130px;padding-bottom:60px}.dock{left:20px;top:20px;bottom:20px;transform:none;width:88px;flex-direction:column;justify-content:center;gap:10px;border-radius:30px}.dock button{padding:12px 0}.fab{bottom:28px;right:32px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style id="css-sky" media="not all">
+/* Blue archive inspired original light anime interface */
+:root{color-scheme:light;--tx:#26466c;--mu:#7894b3;--gl:rgba(255,255,255,.78);--bd:rgba(86,155,211,.22);--ac:#20a9e8;--paper:#f4f9ff}
+body{background:linear-gradient(145deg,#eaf6ff 0%,#f7f8ff 48%,#f2f5ff 100%);color:var(--tx);font-family:"Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+body::before{filter:blur(20px);background:radial-gradient(42% 40% at 5% 4%,#8edaff66,transparent),radial-gradient(35% 35% at 95% 18%,#c9c0ff70,transparent),radial-gradient(40% 35% at 60% 100%,#ffd8e866,transparent)}
+#app{max-width:1040px}h1{color:#225d91;letter-spacing:.04em}.glass{background:rgba(255,255,255,.76);backdrop-filter:blur(20px) saturate(1.2);border-color:rgba(84,153,205,.2);box-shadow:0 10px 32px rgba(67,129,180,.10),inset 0 1px 0 #fff;border-radius:24px}
+.ib{background:linear-gradient(145deg,#fff,#eaf6ff);color:#308cc4;border-color:#cfe7f8;box-shadow:0 3px 10px #6da8d51c}.hero{background:linear-gradient(125deg,#dff6ff,#edf0ff 58%,#fff1f7);border-color:#b8e4f7;box-shadow:0 16px 42px #6eabd52c}.hero.run{background:linear-gradient(125deg,#d5f4ff,#e6efff 58%,#f7f0ff)}.hero.run::after{opacity:.18}.bub{background:color-mix(in srgb,var(--c) 16%,#fff);border:1px solid color-mix(in srgb,var(--c) 22%,#fff)}.big{color:#1e83bd;font-weight:600;letter-spacing:.01em}.hero input,.pn input,.pn textarea{background:#fff;color:var(--tx);border-color:#cce3f3}.btn{background:#edf6fc;border-color:#d7e9f6;color:#376a92}.btn.pr{background:linear-gradient(100deg,#22a8e6,#4b9df1);color:white;box-shadow:0 5px 14px #329de333}.btn.dg{color:#de6481}.tile{background:linear-gradient(150deg,#ffffffed,#eaf5ffcc);border:1px solid color-mix(in srgb,var(--c) 28%,#d8eaf6);box-shadow:0 5px 16px #679fc019;color:#335d80}.tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px #679fc02a}.tile.cur{box-shadow:0 0 0 2px var(--c),0 7px 20px #679fc02a}.datebar{background:#ffffffc9}.tot{color:#4b82a8}.search{background:#ffffffd9;border-color:#d0e5f4;color:var(--tx)}.row{background:#ffffffd9;box-shadow:0 4px 14px #619ac017}.row .m small{color:#7894b3}.hr{border-color:#c5dcec}.hr span{color:#6b8eaa;background:#f8fbff;padding-right:6px}.blk{background:color-mix(in srgb,var(--c) 30%,#fff);border-color:color-mix(in srgb,var(--c) 62%,#fff);color:#294a68;box-shadow:0 2px 7px #457baa17}.now{border-color:#f16b8c}.now::before{background:#f16b8c}.seg{background:#ffffffc9}.seg button{color:#7994af}.seg .on{background:linear-gradient(100deg,#25a8e4,#598ff0);color:#fff;box-shadow:0 3px 9px #4699df30}.card{background:#ffffffd9}.leg div{color:#426b8c}.leg span:last-child{color:#708eaa}.dock{background:#ffffffdc;border-color:#d2e7f5;box-shadow:0 9px 32px #5e94bd29}.dock button{color:#7391aa}.dock .on{background:#dff3ff;color:#258ac1}.fab{background:linear-gradient(145deg,#39b8eb,#648cf2);color:white;border:2px solid #fff;box-shadow:0 8px 24px #438ed84d}.pn{background:#f6fbffed;color:var(--tx);border-color:#d2e7f4}.pn label{color:#6c8ba7}.chip{color:#365e7f}.chip.on{color:#245f89}.sw.on{border-color:#287eb4}.toast{background:#e8f7ff;color:#2e6c91;border-color:#c3e3f5;box-shadow:0 6px 20px #538db52b}.empty{color:#7c9ab4}
+@media(min-width:900px){#app{max-width:1040px;padding-left:130px}}
+</style>
+<style id="css-pop" media="not all">
+:root{color-scheme:light;box-sizing:border-box;--ink:#111;--tx:#111;--mu:#555;--gl:#fff;--bd:#111;--ac:#FFE66D;--bg:#FFF4DC;--sh:4px 4px 0 #111;padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:15px/1.5 "PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif;font-weight:600;font-variant-numeric:tabular-nums;font-feature-settings:"tnum"}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background-image:radial-gradient(rgba(17,17,17,.17) 1.5px,transparent 1.5px);background-size:20px 20px}
+button,input,textarea,select{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+:focus-visible{outline:3px solid #FF2E63;outline-offset:3px}
+.num{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums;font-weight:700}
+.glass{background:#fff;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);border-radius:20px}
+#app{max-width:760px;margin:0 auto;padding:14px 16px calc(130px + env(safe-area-inset-bottom,0px))}
+header{display:flex;align-items:center;justify-content:space-between;padding:6px 4px 18px}
+h1{font-size:28px;margin:0;font-weight:900;letter-spacing:.04em;display:inline-block;background:#FFE66D;border:3px solid var(--ink);box-shadow:var(--sh);border-radius:12px;padding:2px 16px;transform:rotate(-1.5deg)}
+.ib{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:#fff;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-size:20px;font-weight:900;transition:transform .08s,box-shadow .08s}
+.ib:active,.btn:active,.tile:active,.fab:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+.ic{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.hero{padding:20px;margin-bottom:22px;position:relative;--c:#FFE66D;background:var(--c)}
+.hero.run::after{content:"";position:absolute;right:18px;top:18px;width:16px;height:16px;border-radius:50%;background:#FF2E63;border:3px solid var(--ink);animation:bl 1s steps(2) infinite}
+@keyframes bl{50%{opacity:0}}
+.hrow{display:flex;align-items:center;gap:12px}
+.hrow>div>div{color:var(--ink)!important;opacity:.75}
+.bub{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;flex:none;background:#fff;color:var(--ink);border:3px solid var(--ink)}
+.big{font-size:clamp(40px,13vw,62px);font-weight:800;margin:10px 0 8px;letter-spacing:.02em;line-height:1.1}
+.hero input{width:100%;background:#fff;border:3px solid var(--ink);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.btns{display:flex;gap:12px}
+.btn{flex:1;padding:12px;border-radius:14px;background:#fff;border:3px solid var(--ink);box-shadow:var(--sh);font-weight:800;transition:transform .08s,box-shadow .08s}
+.btn.pr{background:var(--ink);color:#FFE66D}
+.btn.dg{background:#FF6B6B}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:16px}
+.tile{--c:#999;display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px 12px;border-radius:18px;background:var(--c);border:3px solid var(--ink);box-shadow:var(--sh);font-size:13px;font-weight:800;transition:transform .08s,box-shadow .08s}
+.tile span{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#fff;border:3px solid var(--ink);color:var(--ink)!important}
+.tile.cur{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink),inset 0 0 0 4px #fff}
+.edm .tile{border-style:dashed}
+.sub{text-align:center;margin:20px 0}
+.sub button{padding:8px 18px;border-radius:99px;background:#fff;border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);font-weight:800}
+.datebar{display:flex;align-items:center;gap:8px;padding:10px 12px;margin-bottom:18px;flex-wrap:wrap}
+.datebar .ib{width:36px;height:36px}
+.dl{position:relative;font-weight:800;padding:4px 8px}
+.dl input{position:absolute;inset:0;opacity:0;width:100%}
+.tot{margin-left:auto;background:#FFE66D;border:2px solid var(--ink);border-radius:99px;padding:1px 12px;font-size:13px;color:var(--ink);font-weight:800}
+.search{width:100%;padding:12px 16px;border-radius:14px;border:3px solid var(--ink);background:#fff;box-shadow:var(--sh);margin-bottom:18px}
+.search::placeholder{color:#777}
+.row{display:flex;align-items:center;gap:12px;padding:12px 14px;margin-bottom:16px;width:100%;text-align:left;border-radius:18px;--c:#999;border-left:14px solid var(--c)}
+.row .bub{width:40px;height:40px;background:var(--c)}
+.row .m{flex:1;min-width:0}
+.row .m b{display:block;font-weight:800}
+.row .m small{color:#444;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .d{font-size:18px}
+.tl{position:relative}
+.hr{position:absolute;left:0;right:0;height:0;border-top:2px dashed rgba(17,17,17,.22)}
+.hr span{position:absolute;top:-10px;left:0;font-size:11px;color:#444;background:#fff;padding-right:4px}
+.blk{position:absolute;left:52px;right:0;border-radius:10px;padding:2px 10px;overflow:hidden;text-align:left;--c:#999;background:var(--c);border:3px solid var(--ink);box-shadow:3px 3px 0 var(--ink);color:var(--ink);font-size:13px;line-height:1.35}
+.blk b{font-weight:800}
+.blk.sm{font-size:9px;line-height:10px;padding:0 8px;border-width:2px;border-radius:6px;box-shadow:2px 2px 0 var(--ink)}
+.now{position:absolute;left:44px;right:0;border-top:3px solid #FF2E63;z-index:3}
+.now::before{content:"";position:absolute;left:-8px;top:-8px;width:12px;height:12px;border-radius:50%;background:#FF2E63;border:3px solid var(--ink)}
+.seg{display:flex;gap:8px;margin-bottom:18px;padding:6px}
+.seg button{flex:1;padding:7px;border-radius:12px;color:var(--ink);border:2px solid transparent;font-weight:800}
+.seg .on{background:#FFE66D;border-color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.card{padding:18px;margin-bottom:20px}
+.pie{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.pie svg{width:170px;height:170px;flex:none;transform:rotate(-90deg);filter:drop-shadow(0 0 0 var(--ink)) drop-shadow(3px 3px 0 var(--ink))}
+.leg{flex:1;min-width:180px}
+.leg div{display:flex;align-items:center;gap:8px;padding:3px 0;font-size:14px}
+.leg i{width:14px;height:14px;border-radius:4px;border:2px solid var(--ink);flex:none}
+.leg span:last-child{margin-left:auto;color:#444}
+.bars{display:flex;gap:3px;height:160px}
+.col{flex:1;display:flex;flex-direction:column;min-width:0}
+.stack{flex:1;display:flex;flex-direction:column-reverse;gap:2px}
+.stack u{display:block;border-radius:2px;min-height:2px;outline:1.5px solid var(--ink)}
+.col i{font-style:normal;font-size:10px;color:#444;height:16px;text-align:center;white-space:nowrap;overflow:visible}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));display:flex;gap:6px;padding:8px;z-index:10;width:min(420px,calc(100% - 28px))}
+.dock button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;border-radius:14px;color:var(--ink);font-size:11px;font-weight:800;border:2px solid transparent}
+.dock .on{background:#FFE66D;border-color:var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.fab{position:fixed;right:20px;bottom:calc(100px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:18px;z-index:11;font-size:34px;line-height:1;font-weight:900;background:#FF8FAB;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);transition:transform .08s,box-shadow .08s}
+#sheet{position:fixed;inset:0;z-index:30;display:none}
+#sheet.on{display:block}
+.bk{position:absolute;inset:0;background:rgba(17,17,17,.5)}
+.pn{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(560px,100%);max-height:88vh;overflow:auto;padding:22px 20px calc(24px + env(safe-area-inset-bottom,0px));border-radius:28px 28px 0 0;background:var(--bg);box-shadow:none;border-bottom-width:0;animation:up .18s ease-out}
+@keyframes up{from{transform:translate(-50%,40px);opacity:0}}
+.pn h2{margin:0 0 14px;font-size:22px;font-weight:900}
+.pn label{display:block;color:var(--ink);font-size:13px;font-weight:800;margin:14px 0 6px}
+.pn input,.pn textarea{width:100%;padding:11px 14px;border-radius:12px;background:#fff;border:3px solid var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{--c:#999;display:flex;align-items:center;gap:6px;padding:6px 12px 6px 8px;border-radius:99px;border:2px solid var(--ink);background:var(--c);font-size:13px;font-weight:800}
+.chip .ic{width:16px;height:16px;color:var(--ink)}
+.chip.on{outline:3px solid var(--ink);outline-offset:2px;box-shadow:3px 3px 0 var(--ink)}
+.sw{width:32px;height:32px;border-radius:50%;border:3px solid var(--ink)}
+.sw.on{outline:3px solid var(--ink);outline-offset:2px}
+.mt{margin-top:20px}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:50;padding:10px 18px;border-radius:12px;background:var(--ink);color:#FFE66D;border:3px solid var(--ink);box-shadow:4px 4px 0 #FF8FAB;font-weight:800}
+.empty{text-align:center;color:#444;padding:40px 0;font-weight:800}
+@media(min-width:900px){#app{max-width:900px;padding-left:130px;padding-bottom:60px}.dock{left:20px;top:20px;bottom:20px;transform:none;width:88px;flex-direction:column;justify-content:center;gap:10px}.dock button{padding:12px 0}.fab{bottom:28px;right:32px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+<style>
+.hbtns{display:flex;gap:8px}
+.thm{display:flex!important;align-items:center;gap:14px;width:100%;margin-bottom:12px;text-align:left;flex:none!important}
+.thm .pv{display:flex;width:66px;height:44px;border-radius:12px;overflow:hidden;flex:none;border:1px solid rgba(127,127,127,.4)}
+.thm .pv i{flex:1}
+.thm .tx{flex:1;min-width:0}
+.thm .tx small{display:block;opacity:.7;font-weight:400;font-size:12px}
+.thm .ck{font-size:18px;opacity:0}
+.thm.on{outline:2px solid currentColor;outline-offset:2px}
+.thm.on .ck{opacity:1}
+</style>
+<script>
+(function(){var T={mist:'#0b0e1a',pop:'#FFF4DC',sky:'#eaf6ff'},k;try{k=localStorage.getItem('tl_theme')}catch(e){}
+ window.setTheme=function(t){if(!T[t])t='mist';var g=function(id){return document.getElementById(id)};
+  g('css-base').media=t==='pop'?'not all':'all';g('css-sky').media=t==='sky'?'all':'not all';g('css-pop').media=t==='pop'?'all':'not all';
+  document.querySelector('meta[name=theme-color]').content=T[t];try{localStorage.setItem('tl_theme',t)}catch(e){}return t};
+ window.THEME=setTheme(k)})();
+</script>
+</head>
+<body>
+<div id="app"><header id="hd"></header><main id="mn"></main></div>
+<nav class="dock glass" id="dk" aria-label="主選單"></nav>
+<button class="fab" data-act="plus" aria-label="新增">+</button>
+<div id="sheet"></div>
+<script>
+const $=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0'),MIN=6e4,DAY=864e5;
+const E=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-3);
+const sd=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
+const addD=(t,n)=>{const d=new Date(t);d.setDate(d.getDate()+n);return d.getTime()};
+const ICONS={work:'M3 8h18v11H3zM9 8V5h6v3',study:'M5 4h10a3 3 0 013 3v13H8a3 3 0 01-3-3zM5 17a3 3 0 013-3h10',fun:'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5l-5.4 3 1.2-6L3.3 9.3l6.1-.7z',eat:'M7 3v8M5 3v5a2 2 0 004 0V3M7 11v10M17 3c-2 2-2.5 5-2.5 8H17v10',commute:'M4 15l1.5-5a2 2 0 012-1.5h9a2 2 0 012 1.5L20 15v4h-3v-2H7v2H4zM7.5 15h.01M16.5 15h.01',sleep:'M20 14.5A8 8 0 019.5 4a8 8 0 1010.5 10.5z',sport:'M6 8v8M3 10v4M18 8v8M21 10v4M6 12h12',rest:'M5 9h11v5a4 4 0 01-4 4H9a4 4 0 01-4-4zM16 10h2a2 2 0 010 4h-2M8 3v3M12 3v3',task:'M5 12l4 4 10-10',other:'M6 12h.01M12 12h.01M18 12h.01',toilet:'M12 4h.01M9 8h6l-1 6v7M10 21v-7M9 8l-1 6M15 8l1 6',walk:'M13 4h.01M11 8l-2 5 3 2v6M12 9l3 3 2 1M9 13l-3 6',clock:'M12 7v5l3 2M12 3a9 9 0 100 18 9 9 0 000-18',list:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',bars:'M5 20V10M12 20V4M19 20v-7',tl:'M4 5h16M4 12h10M4 19h14',gear:'M12 9a3 3 0 100 6 3 3 0 000-6zM19 12l2-1.5-2-3.5-2.3.8a7 7 0 00-1.7-1L14.5 4h-4L10 6.8a7 7 0 00-1.7 1L6 7 4 10.500 6 12a7 7 0 000 1.5L4 15l2 3.500 2.300-.8a7 7 0 001.700 1l.5 2.800h4l.5-2.800a7 7 0 001.700-1l2.300.8 2-3.500-2-1.500c.1-.5.1-1 0-1.500z'};
+const COLORS=['#E8B07A','#9DB8E8','#C3A6F0','#F08A7C','#E58FB3','#8E8BD9','#6FD0C2','#F2D58A','#F4A261','#A9B2C3','#8FC9E8','#9BD68F'];
+ICONS.palette='M12 3a9 9 0 100 18c.9 0 1.5-.7 1.5-1.5 0-.4-.2-.8-.4-1.1-.2-.3-.4-.6-.4-1 0-.8.7-1.4 1.5-1.4H16a5 5 0 005-5c0-4.4-4-8-9-8zM7.5 12h.01M9 7.5h.01M15 7.5h.01';
+/* themes：資料一律存 COLORS 基礎色，顯示時用 cc() 換成當前主題的對應色 */
+const THEMES={mist:{n:'霧境',d:'深色毛玻璃',pv:['#0b0e1a','#4b3f8f','#A9B8FF']},pop:{n:'漫畫',d:'粗框硬陰影',pv:['#FFF4DC','#111111','#FFE66D']},sky:{n:'晴空',d:'淺藍清新',pv:['#eaf6ff','#ffffff','#20a9e8']}};
+const PAL={mist:COLORS,sky:COLORS,pop:['#FFB74D','#7CC4FF','#C9A7FF','#FF8A80','#FF8FAB','#9FA8FF','#5EEAD4','#FFE66D','#FFA26B','#D1D5DB','#7DD3FC','#A3E635']};
+let theme=window.THEME||'mist';
+const cc=c=>{const i=COLORS.indexOf(c);return i<0?c:(PAL[theme]||COLORS)[i]};
+const DEF=[['work','工作','work',0],['study','學習','study',1],['fun','娛樂','fun',2],['eat','吃飯','eat',3],['commute','通勤','commute',4],['sleep','睡覺','sleep',5],['sport','運動','sport',6],['rest','休息','rest',7],['task','任務','task',8],['toilet','廁所','toilet',10],['walk','散步','walk',11],['other','其他','other',9]].map(([id,n,i,c])=>({id,n,i,c:COLORS[c]}));
+const ico=i=>`<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[i]||ICONS.other}"/></svg>`;
+let S,tab='timer',vd=sd(Date.now()),edm=false,q='',rng='week',ER=null,EC=null;
+function load(){try{S=JSON.parse(localStorage.getItem('tl_v1'))}catch(e){}
+ if(!S||!Array.isArray(S.cats)){S={cats:DEF.map(x=>({...x})),recs:[],active:null};sample();save()}}
+function save(){try{localStorage.setItem('tl_v1',JSON.stringify(S))}catch(e){}}
+function sample(){const T=[['sleep',0,'睡不著起床，最後一小時睡不安穩，微冷'],['other',340],['eat',370,'早餐'],['other',405],['work',470,'收信、整理待辦'],['rest',590],['study',605,'網站前端，重構待辦事項APP網站'],['sport',725],['eat',760,'午餐'],['rest',795],['study',815,'網站前端，待辦事項APP網站'],['other',1040],['eat',1062],['rest',1091],['commute',1105],['eat',1158,'晚餐'],['task',1219,'幫爸爸，買筆電'],['other',1255],['toilet',1270],['fun',1282,'bilibili'],['other',1330],['end',1439]];
+ const t0=sd(Date.now()),now=Date.now();S.recs=[];
+ for(let k=0;k<=13;k++){const b=addD(t0,-k),sh=j=>j&&j<T.length-1?(k*7+j*3)%9-4:0;
+  for(let j=0;j<T.length-1;j++){const s=b+(T[j][1]+sh(j))*MIN;let e=b+(T[j+1][1]+sh(j+1))*MIN;if(s>=now)break;e=Math.min(e,now);S.recs.push({id:uid(),c:T[j][0],s,e,n:T[j][2]||''})}}}
+const cat=id=>S.cats.find(c=>c.id===id)||{n:'已刪除類別',i:'other',c:'#9aa3b5'};
+const fT=t=>{const d=new Date(t);return pad(d.getHours())+':'+pad(d.getMinutes())};
+const fD=ms=>{const m=Math.round(ms/MIN);return pad(Math.floor(m/60))+':'+pad(m%60)};
+const fHM=ms=>{const m=Math.round(ms/MIN);return Math.floor(m/60)+' 小時 '+(m%60)+' 分鐘'};
+const fS=ms=>{const s=Math.floor(ms/1e3);return pad(Math.floor(s/3600))+':'+pad(Math.floor(s/60)%60)+':'+pad(s%60)};
+const toL=t=>new Date(t-new Date(t).getTimezoneOffset()*MIN).toISOString().slice(0,16);
+const dayRecs=d=>S.recs.filter(r=>r.e>d&&r.s<d+DAY).sort((a,b)=>a.s-b.s);
+const clip=(r,d)=>Math.max(0,Math.min(r.e,d+DAY)-Math.max(r.s,d));
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2200)}
+/* data ops */
+function trim(s,e,ex){const out=[];S.recs.forEach(o=>{if(o.id===ex||o.e<=s||o.s>=e){out.push(o);return}
+ if(o.s<s)out.push({...o,e:s});if(o.e>e)out.push({...o,id:o.s<s?uid():o.id,s:e})});S.recs=out}
+const hasOv=(s,e,ex)=>S.recs.some(o=>o.id!==ex&&o.s<e&&o.e>s);
+function pushRec(c,s,e,n){if(e-s<1e3)return;trim(s,e,null);S.recs.push({id:uid(),c,s,e,n:n||''})}
+const elapsed=a=>a.acc+(a.p?0:Date.now()-a.s);
+function startCat(id){const a=S.active;if(a&&a.c===id){if(a.p){a.s=Date.now();a.p=0}}else{if(a)stopA();S.active={c:id,s:Date.now(),acc:0,p:0,n:''}}save();render()}
+function stopA(){const a=S.active;if(a&&!a.p)pushRec(a.c,a.s,Date.now(),a.n);S.active=null}
+/* views */
+const TITLES={timer:'計時',tl:'時間軸',list:'明細',stats:'統計'};
+function dateBar(){const d=new Date(vd),w='日一二三四五六'[d.getDay()],tot=dayRecs(vd).reduce((a,r)=>a+clip(r,vd),0);
+ return `<div class="datebar glass"><button class="ib" data-act="prev" aria-label="前一天">‹</button><label class="dl">${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日 週${w}<input type="date" id="dp" value="${toL(vd).slice(0,10)}"></label><button class="ib" data-act="next" aria-label="後一天">›</button><span class="tot num">已記錄 ${fHM(tot)}</span></div>`}
+function vTimer(){const a=S.active,c=a?cat(a.c):null;
+ const hero=a?`<div class="hero glass ${a.p?'':'run'}" style="--c:${cc(c.c)}"><div class="hrow"><span class="bub">${ico(c.i)}</span><div><b>${E(c.n)}</b><div style="color:var(--mu);font-size:13px">${a.p?'已暫停':'記錄中'}</div></div></div><div class="big num" id="big">${fS(elapsed(a))}</div><input id="an" placeholder="備註（例如：睡眠品質、工作內容）" value="${E(a.n)}"><div class="btns"><button class="btn" data-act="pause">${a.p?'繼續':'暫停'}</button><button class="btn pr" data-act="stop">停止並儲存</button></div></div>`
+ :`<div class="hero glass"><div class="hrow"><span class="bub">${ico('clock')}</span><div><b>目前沒有進行中的活動</b><div style="color:var(--mu);font-size:13px">點選下方類別開始計時</div></div></div><div class="big num" style="color:var(--mu)">00:00:00</div></div>`;
+ return hero+`<div class="grid ${edm?'edm':''}">${S.cats.map(x=>`<button class="tile ${a&&a.c===x.id?'cur':''}" style="--c:${cc(x.c)}" data-act="${edm?'ecat':'cat'}" data-id="${x.id}"><span style="color:var(--c)">${ico(x.i)}</span>${E(x.n)}</button>`).join('')}</div><div class="sub"><button data-act="edm">${edm?'完成編輯':'編輯類別'}</button></div>`}
+function vTl(){const rs=dayRecs(vd),today=vd===sd(Date.now());let h='';
+ for(let i=0;i<24;i++)h+=`<div class="hr" style="top:${i*60}px"><span class="num">${pad(i)}:00</span></div>`;
+ rs.forEach(r=>{const s=Math.max(r.s,vd),e=Math.min(r.e,vd+DAY),c=cat(r.c),top=(s-vd)/MIN,ht=Math.max(15,(e-s)/MIN-2),sm=ht<30;
+  h+=`<button class="blk ${sm?'sm':''}" style="--c:${cc(c.c)};top:${top}px;height:${ht}px" data-act="rec" data-id="${r.id}"><b>${E(c.n)}</b>${sm?'':` <span class="num" style="opacity:.7">${fT(r.s)}–${fT(r.e)}</span>`}${ht>=46&&r.n?`<div style="opacity:.85">${E(r.n)}</div>`:''}</button>`});
+ if(today)h+=`<div class="now" style="top:${(Date.now()-vd)/MIN}px"></div>`;
+ return dateBar()+`<div class="tl glass" style="height:1440px;margin-top:6px;padding:0 10px;border-radius:26px"><div style="position:relative;height:1440px;margin:0 -10px 0 0">${h.replace(/left:52px/g,'')}</div></div>`}
+function vList(){const k=q.trim().toLowerCase();
+ let rs=dayRecs(vd).reverse().filter(r=>!k||(cat(r.c).n+' '+r.n).toLowerCase().includes(k));
+ return dateBar()+`<input class="search" id="q" type="search" placeholder="搜尋類別名稱、備註或 #標籤" value="${E(q)}">`+(rs.length?rs.map(r=>{const c=cat(r.c);return `<button class="row glass" style="--c:${cc(c.c)}" data-act="rec" data-id="${r.id}"><span class="bub">${ico(c.i)}</span><span class="m"><b>${E(c.n)}</b><small class="num">${fT(r.s)} – ${fT(r.e)}</small>${r.n?`<small>${E(r.n)}</small>`:''}</span><span class="d num">${fD(r.e-r.s)}</span></button>`}).join(''):`<div class="empty">${k?'找不到符合的紀錄':'這天還沒有紀錄，點右下角 + 補登'}</div>`)}
+function vStats(){const n=rng==='day'?1:rng==='week'?7:30,from=addD(vd,-(n-1)),to=vd+DAY,nb=n===1?24:n,bs=n===1?36e5:DAY,tot={},B=Array.from({length:nb},()=>({}));
+ S.recs.forEach(r=>{const s=Math.max(r.s,from),e=Math.min(r.e,to);if(e<=s)return;tot[r.c]=(tot[r.c]||0)+e-s;
+  for(let i=Math.floor((s-from)/bs);i<nb;i++){const a=from+i*bs;if(a>=e)break;const o=Math.min(e,a+bs)-Math.max(s,a);if(o>0)B[i][r.c]=(B[i][r.c]||0)+o}});
+ const ent=Object.entries(tot).sort((a,b)=>b[1]-a[1]),sum=ent.reduce((a,x)=>a+x[1],0),mx=Math.max(1,...B.map(b=>Object.values(b).reduce((a,x)=>a+x,0)));
+ let acc=0;const arcs=ent.map(([id,v])=>{const p=v/sum*100,s=`<circle cx="21" cy="21" r="15.9155" fill="none" stroke="${cc(cat(id).c)}" stroke-width="5" stroke-dasharray="${Math.max(p-.6,.1)} ${100-Math.max(p-.6,.1)}" stroke-dashoffset="${-acc}"/>`;acc+=p;return s}).join('');
+ const bars=B.map((b,i)=>{const d=new Date(from+i*bs),lab=n===1?(i%6===0?pad(i):''):(n<=7||i%5===0?d.getDate():'');
+  return `<div class="col"><div class="stack">${Object.entries(b).map(([id,v])=>`<u title="${E(cat(id).n)}" style="height:${v/mx*100}%;background:${cc(cat(id).c)}"></u>`).join('')}</div><i class="num">${lab}</i></div>`}).join('');
+ return dateBar()+`<div class="seg glass">${[['day','日'],['week','週'],['month','月']].map(([k,l])=>`<button class="${rng===k?'on':''}" data-act="rng" data-id="${k}">${l}</button>`).join('')}</div>`+(sum?`<div class="card glass"><div class="pie"><svg viewBox="0 0 42 42">${arcs}</svg><div class="leg">${ent.map(([id,v])=>`<div><i style="background:${cc(cat(id).c)}"></i><span>${E(cat(id).n)}</span><span class="num">${fD(v)}・${(v/sum*100).toFixed(0)}%</span></div>`).join('')}</div></div></div><div class="card glass"><div style="color:var(--mu);font-size:13px;margin-bottom:10px">${n===1?'每小時分布':'每日趨勢'}</div><div class="bars">${bars}</div></div>`:'<div class="empty">這段期間沒有紀錄</div>');}
+function render(){
+ $('#hd').innerHTML=`<h1>${TITLES[tab]}</h1><div class="hbtns"><button class="ib" data-act="theme" aria-label="切換外觀">${ico('palette')}</button><button class="ib" data-act="set" aria-label="資料設定">${ico('gear')}</button></div>`;
+ $('#mn').innerHTML={timer:vTimer,tl:vTl,list:vList,stats:vStats}[tab]();
+ $('#mn').classList.toggle('edm',edm);
+ $('#dk').innerHTML=[['timer','計時','clock'],['tl','時間軸','tl'],['list','明細','list'],['stats','統計','bars']].map(([k,l,i])=>`<button class="${tab===k?'on':''}" data-act="tab" data-id="${k}">${ico(i)}${l}</button>`).join('')}
+/* sheets */
+function sheet(h){$('#sheet').innerHTML=`<div class="bk" data-act="close"></div><div class="pn glass">${h}</div>`;$('#sheet').classList.add('on')}
+const close=()=>{$('#sheet').classList.remove('on');$('#sheet').innerHTML=''};
+const chips=(sel)=>`<div class="chips">${S.cats.map(c=>`<button class="chip ${c.id===sel?'on':''}" style="--c:${cc(c.c)}" data-act="pick" data-id="${c.id}">${ico(c.i)}${E(c.n)}</button>`).join('')}</div>`;
+function recSheet(id,pre){const ex=id&&S.recs.find(r=>r.id===id);ER=ex?{...ex}:pre;
+ sheet(`<h2>${ex?'編輯紀錄':'補登時段'}</h2><label>類別</label>${chips(ER.c)}<label>開始</label><input type="datetime-local" id="es" value="${toL(ER.s)}"><label>結束</label><input type="datetime-local" id="ee" value="${toL(ER.e)}"><label>備註</label><textarea id="en" rows="3" placeholder="例如：睡眠品質、具體工作內容，可加 #標籤">${E(ER.n)}</textarea><div class="btns mt">${ex?'<button class="btn dg" data-act="delrec">刪除</button>':''}<button class="btn pr" data-act="saverec">儲存</button></div>`)}
+function catSheet(c){EC=c;const nm=$('#cn')?$('#cn').value:c.n;
+ sheet(`<h2>${c.isNew?'新增類別':'編輯類別'}</h2><label>名稱</label><input id="cn" value="${E(nm)}" maxlength="12"><label>代表色</label><div class="chips">${COLORS.map(x=>`<button class="sw ${x===c.c?'on':''}" style="background:${cc(x)}" data-act="pcol" data-id="${x}" aria-label="顏色 ${x}"></button>`).join('')}</div><label>圖示</label><div class="chips">${Object.keys(ICONS).filter(k=>!['gear','bars','tl','list','palette'].includes(k)).map(k=>`<button class="chip ${k===c.i?'on':''}" style="--c:${cc(c.c)}" data-act="pico" data-id="${k}">${ico(k)}</button>`).join('')}</div><div class="btns mt">${c.isNew?'':'<button class="btn dg" data-act="delcat">刪除</button>'}<button class="btn pr" data-act="savecat">儲存</button></div>`)}
+function setSheet(){sheet(`<h2>資料設定</h2><label>JSON 資料（匯出後可複製保存，或貼上後匯入）</label><textarea id="js" rows="6" class="num" style="font-size:12px"></textarea><div class="btns mt"><button class="btn" data-act="exp">匯出</button><button class="btn" data-act="imp">匯入</button></div><label>或選擇備份檔</label><input type="file" id="fl" accept=".json,application/json"><div class="btns mt"><button class="btn" data-act="smp">載入範例資料</button><button class="btn dg" data-act="clr">清除所有資料</button></div><label>外觀</label><div class="btns"><button class="btn" data-act="theme">切換外觀（目前：${THEMES[theme].n}）</button></div>`)}
+function themeSheet(){sheet(`<h2>切換外觀</h2>${Object.entries(THEMES).map(([k,t])=>`<button class="btn thm ${k===theme?'on':''}" data-act="pickth" data-id="${k}"><span class="pv">${t.pv.map(c=>`<i style="background:${c}"></i>`).join('')}</span><span class="tx">${t.n}<small>${t.d}</small></span><span class="ck">✓</span></button>`).join('')}`)}
+function doImport(txt,over){let o;try{o=JSON.parse(txt)}catch(e){return toast('格式錯誤：不是有效的 JSON')}
+ if(!o||!Array.isArray(o.cats)||!Array.isArray(o.recs)||o.recs.some(r=>typeof r.s!=='number'||typeof r.e!=='number'))return toast('格式錯誤：缺少類別或紀錄');
+ if(over)S={cats:o.cats,recs:o.recs,active:null};else{o.cats.forEach(c=>{if(!S.cats.some(x=>x.id===c.id))S.cats.push(c)});const ids=new Set(S.recs.map(r=>r.id));o.recs.forEach(r=>{if(!ids.has(r.id))S.recs.push(r)})}
+ save();close();render();toast('已匯入')}
+/* events */
+const H={
+ tab(id){tab=id;render();if(id==='tl')$('#mn').scrollIntoView(),scrollTo(0,vd===sd(Date.now())?Math.max(0,(Date.now()-vd)/MIN-300):360)},
+ cat(id){startCat(id)},edm(){edm=!edm;render()},
+ pause(){const a=S.active;if(a.p){a.s=Date.now();a.p=0}else{pushRec(a.c,a.s,Date.now(),a.n);a.acc+=Date.now()-a.s;a.p=1}save();render()},
+ stop(){stopA();save();render();toast('已儲存')},
+ prev(){vd=addD(vd,-1);render()},next(){vd=addD(vd,1);render()},rng(id){rng=id;render()},
+ close,rec(id){recSheet(id)},
+ plus(){sheet(`<h2>新增</h2><div class="btns"><button class="btn" data-act="manual">補登過去時段</button><button class="btn" data-act="newcat">新增類別</button></div>`)},
+ manual(){const e=Math.min(Date.now(),vd+DAY-MIN),last=dayRecs(vd).filter(r=>r.e<=e).pop();recSheet(null,{c:S.cats[0].id,s:last?last.e:e-36e5,e,n:''})},
+ pick(id){ER.c=id;ER.n=$('#en').value;ER.s=new Date($('#es').value).getTime()||ER.s;ER.e=new Date($('#ee').value).getTime()||ER.e;recSheet(ER.id&&S.recs.some(r=>r.id===ER.id)?ER.id:null,ER)},
+ saverec(){const s=new Date($('#es').value).getTime(),e=new Date($('#ee').value).getTime();if(!(e>s))return toast('結束時間必須晚於開始時間');
+  if(hasOv(s,e,ER.id)&&!confirm('與其他紀錄重疊，要覆蓋重疊的部分嗎？'))return;
+  trim(s,e,ER.id);const x=ER.id&&S.recs.find(r=>r.id===ER.id),r={id:ER.id||uid(),c:ER.c,s,e,n:$('#en').value.trim()};x?Object.assign(x,r):S.recs.push(r);save();close();render()},
+ delrec(){if(!confirm('確定刪除這筆紀錄？'))return;S.recs=S.recs.filter(r=>r.id!==ER.id);save();close();render()},
+ newcat(){catSheet({isNew:1,id:'c'+uid(),n:'',i:'other',c:COLORS[9]})},
+ ecat(id){catSheet({...cat(id)})},
+ pcol(id){EC.c=id;catSheet(EC)},pico(id){EC.i=id;catSheet(EC)},
+ savecat(){const n=$('#cn').value.trim();if(!n)return toast('請輸入類別名稱');EC.n=n;const{isNew,...c}=EC;const x=S.cats.find(k=>k.id===c.id);x?Object.assign(x,c):S.cats.push(c);save();close();render()},
+ delcat(){if(!confirm('刪除此類別？既有紀錄會保留，但顯示為「已刪除類別」。'))return;S.cats=S.cats.filter(k=>k.id!==EC.id);save();close();render()},
+ set(){setSheet()},
+ theme(){themeSheet()},
+ pickth(k){theme=setTheme(k);close();render();toast('已切換為「'+THEMES[theme].n+'」')},
+ exp(){const j=JSON.stringify({version:1,exported:new Date().toISOString(),cats:S.cats,recs:S.recs},null,1);$('#js').value=j;
+  try{navigator.clipboard.writeText(j).then(()=>toast('已複製到剪貼簿'),()=>{})}catch(e){}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([j],{type:'application/json'}));a.download='timelog-'+toL(Date.now()).slice(0,10)+'.json';a.click()}catch(e){}},
+ imp(){const t=$('#js').value.trim();if(!t)return toast('請先貼上 JSON');doImport(t,confirm('按「確定」覆蓋現有資料，按「取消」與現有資料合併。'))},
+ smp(){if(!confirm('載入範例資料會取代現有紀錄，確定嗎？'))return;S.active=null;S.cats=DEF.map(x=>({...x}));sample();save();close();render()},
+ clr(){if(!confirm('確定清除所有紀錄與進行中的計時？此動作無法復原。'))return;S.recs=[];S.active=null;save();close();render();toast('已清除所有資料')}
+};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(t&&H[t.dataset.act])H[t.dataset.act](t.dataset.id)});
+document.addEventListener('input',e=>{if(e.target.id==='an'&&S.active){S.active.n=e.target.value;save()}
+ if(e.target.id==='q'){q=e.target.value;const p=e.target.selectionStart;render();const i=$('#q');i.focus();i.setSelectionRange(p,p)}});
+document.addEventListener('change',e=>{if(e.target.id==='dp'&&e.target.value){const[y,m,d]=e.target.value.split('-').map(Number);vd=new Date(y,m-1,d).getTime();render()}
+ if(e.target.id==='fl'&&e.target.files[0]){const f=new FileReader();f.onload=()=>{$('#js').value=f.result;toast('已讀取檔案，按「匯入」完成')};f.readAsText(e.target.files[0])}});
+setInterval(()=>{const b=$('#big');if(b&&S.active&&!S.active.p)b.textContent=fS(elapsed(S.active))},1000);
+load();render();
+</script>
+</body>
+</html>
